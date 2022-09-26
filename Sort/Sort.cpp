@@ -3,9 +3,10 @@
 
 #include <iostream>
 #include <string>
-int max(int array[10]) {
-    int max = 0;
-    for (int i = 0; i < 10; i++)
+const int size = 1000;
+int max(int array[size]) {
+    int max = array[0];
+    for (int i = 1; i < size; i++)
     {
         if (array[i] > max)
         {
@@ -17,17 +18,35 @@ int max(int array[10]) {
 int main()
 {
     srand(time(0));
-    int array[10];
-    for (int i = 0; i < 10; i++)
+    int array[size] = {0};
+    int output[size] = {0};
+    for (int i = 0; i < size; i++)
     {
         array[i] = rand() % 100;
     }
     int maxNum = max(array);
-    std::cout << maxNum;
 
-    int* countArray = new int[maxNum];
-    countArray[1] = 99;
-    std::cout << countArray[1];
+    int* count = new int[maxNum+1] {0};
+
+    for (int i = 0; i < size; i++)
+    {
+        count[array[i]]++;
+    }
+
+    for (int i = 1; i <= maxNum; i++)
+    {
+        count[i] += count[i - 1];
+    }
+
+    for (int i = size -1; i >= 0 ; i--)
+    {
+        output[count[array[i]] - 1] = array[i];
+        count[array[i]]--;
+    }
+    for (int i = 0; i < size; i++)
+    {
+        std::cout << output[i] << "\n";
+    }
 }
 
 
